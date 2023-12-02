@@ -56,14 +56,14 @@ void searchMatrix(int matrix[][COLS], int target) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
             if (matrix[i][j] == target) {
-                printf("O elemento %d foi encontrado na posi��o [%d][%d]\n", target, i, j);
+                printf("O elemento %d foi encontrado na posição [%d][%d]\n", target, i, j);
                 found = 1;
             }
         }
     }
 
     if (!found) {
-        printf("O elemento %d n�o foi encontrado na matriz.\n", target);
+        printf("O elemento %d não foi encontrado na matriz.\n", target);
     }
 }
 
@@ -129,4 +129,72 @@ int main() {
     return 0;
 }
 
+//quick sort abaixo 
+
+#include <stdio.h>
+
+// Função para trocar dois elementos
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+// Função para encontrar o pivô e particionar o vetor
+int partition(int arr[][3], int low, int high) {
+    int pivot = arr[high][0]; // escolhendo o último elemento como pivô
+    int i = (low - 1);
+
+    for (int j = low; j <= high - 1; j++) {
+        // Se o elemento atual for menor ou igual ao pivô
+        if (arr[j][0] <= pivot) {
+            i++; // incrementa o index do menor elemento
+            swap(&arr[i][0], &arr[j][0]);
+            swap(&arr[i][1], &arr[j][1]);
+            swap(&arr[i][2], &arr[j][2]);
+        }
+    }
+    swap(&arr[i + 1][0], &arr[high][0]);
+    swap(&arr[i + 1][1], &arr[high][1]);
+    swap(&arr[i + 1][2], &arr[high][2]);
+
+    return (i + 1);
+}
+
+// Função recursiva de ordenação Quick Sort
+void quickSort(int arr[][3], int low, int high) {
+    if (low < high) {
+        // Encontra o pivô e particiona o vetor
+        int pi = partition(arr, low, high);
+
+        // Ordena os elementos separadamente antes e depois da partição
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Função para imprimir a matriz bidimensional
+void printMatrix(int arr[][3], int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", arr[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int arr[][3] = {{5, 8, 3}, {2, 1, 4}, {7, 6, 9}, {10, 12, 11}};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Matriz antes da ordenação:\n");
+    printMatrix(arr, size);
+
+    quickSort(arr, 0, size - 1);
+
+    printf("Matriz depois da ordenação:\n");
+    printMatrix(arr, size);
+
+    return 0;
+}
 
